@@ -563,7 +563,6 @@ API_FILES += vnet/lisp-cp/lisp.api
 
 if ENABLE_TESTS
 LDS = \
-  libvppinfra.la \
   libvnet.la \
   libvlib.la  \
   libvlib_unix.la \
@@ -571,6 +570,7 @@ LDS = \
   libsvmdb.la \
   libvlibapi.la \
   libvlibmemory.la \
+  libvppinfra.la \
   -lpthread -lrt -lm -lcrypto
 
 TESTS += test_cp_serdes test_lisp_types

@@ -48,13 +48,13 @@ install-exec-local:
 #
 # Test client
 #
-noinst_PROGRAMS += test_pneum
-test_pneum_SOURCES = pneum/pneum.c pneum/test_pneum.c
-test_pneum_LDADD = \
-  $(top_builddir)/libvppinfra.la \
-  $(top_builddir)/libvlibmemoryclient.la \
-  $(top_builddir)/libvlibapi.la \
-  $(top_builddir)/libsvm.la \
-  -lpthread -lm -lrt
+# noinst_PROGRAMS += test_pneum
+# test_pneum_SOURCES = pneum/pneum.c pneum/test_pneum.c
+# test_pneum_LDADD = \
+#   $(top_builddir)/libvppinfra.la \
+#   $(top_builddir)/libvlibmemoryclient.la \
+#   $(top_builddir)/libvlibapi.la \
+#   $(top_builddir)/libsvm.la \
+#   -lpthread -lm -lrt
 
 
