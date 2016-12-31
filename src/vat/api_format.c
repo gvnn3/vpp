@@ -3308,6 +3308,7 @@ static void vl_api_policer_add_del_reply_t_handler_json
   vam->result_ready = 1;
 }
 
+#if 0
 /* Format hex dump. */
 u8 *
 format_hex_bytes (u8 * s, va_list * va)
@@ -3334,6 +3335,7 @@ format_hex_bytes (u8 * s, va_list * va)
 
   return s;
 }
+#endif
 
 static void
 vl_api_classify_table_info_reply_t_handler (vl_api_classify_table_info_reply_t

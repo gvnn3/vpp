@@ -92,6 +92,7 @@ os_get_ncpus (void)
 void
 vlib_set_thread_name (char *name)
 {
+#ifndef __FreeBSD__
   int pthread_setname_np (pthread_t __target_thread, const char *__name);
   int rv;
   pthread_t thread = pthread_self ();
@@ -102,6 +103,7 @@ vlib_set_thread_name (char *name)
       if (rv)
 	clib_warning ("pthread_setname_np returned %d", rv);
     }
+#endif /* __FreeBSD__ */
 }
 
 static int
@@ -194,6 +196,7 @@ vlib_thread_init (vlib_main_t * vm)
     tm->cpu_socket_bitmap = clib_bitmap_set (0, 0, 1);
 
   /* pin main thread to main_lcore  */
+#ifndef __FreeBSD__
 #if DPDK==0
   {
     cpu_set_t cpuset;
@@ -202,7 +205,7 @@ vlib_thread_init (vlib_main_t * vm)
     pthread_setaffinity_np (pthread_self (), sizeof (cpu_set_t), &cpuset);
   }
 #endif
-
+#endif /* __FreeBSD__ */
   /* as many threads as stacks... */
   vec_validate_aligned (vlib_worker_threads, vec_len (vlib_thread_stacks) - 1,
 			CLIB_CACHE_LINE_BYTES);
@@ -213,7 +216,11 @@ vlib_thread_init (vlib_main_t * vm)
   w->thread_mheap = clib_mem_get_heap ();
   w->thread_stack = vlib_thread_stacks[0];
   w->lcore_id = tm->main_lcore;
+#ifndef __FreeBSD__
   w->lwp = syscall (SYS_gettid);
+#else
+  w->lwp = getpid();
+#endif /* __FreeBSD__ */
   w->thread_id = pthread_self ();
   tm->n_vlib_mains = 1;
 
@@ -510,7 +517,12 @@ vlib_worker_thread_bootstrap_fn (void *arg)
   void *rv;
   vlib_worker_thread_t *w = arg;
 
+#ifndef __FreeBSD__
   w->lwp = syscall (SYS_gettid);
+#else
+  w->lwp = getpid();
+#endif /* __FreeBSD__ */
+
   w->thread_id = pthread_self ();
 
   rv = (void *) clib_calljmp
@@ -537,14 +549,18 @@ vlib_launch_thread (void *fp, vlib_worker_thread_t * w, unsigned lcore_id)
     {
       int ret;
       pthread_t worker;
+#ifndef __FreeBSD__
       cpu_set_t cpuset;
       CPU_ZERO (&cpuset);
       CPU_SET (lcore_id, &cpuset);
-
+#endif /* __FreeBSD__ */
       ret = pthread_create (&worker, NULL /* attr */ , fp_arg, (void *) w);
+
+#ifndef __FreeBSD__
       if (ret == 0)
 	return pthread_setaffinity_np (worker, sizeof (cpu_set_t), &cpuset);
       else
+#endif /* __FreeBSD__ */
 	return ret;
     }
 }

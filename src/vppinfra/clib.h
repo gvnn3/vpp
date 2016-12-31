@@ -111,9 +111,7 @@
   decl
 
 /* Use __builtin_clz if available. */
-#ifdef __GNUC__
-#include <features.h>
-#if __GNUC_PREREQ(3, 4)
+#ifndef __FreeBSD__
 #if uword_bits == 64
 #define count_leading_zeros(count,x) count = __builtin_clzll (x)
 #define count_trailing_zeros(count,x) count = __builtin_ctzll (x)
@@ -121,8 +119,11 @@
 #define count_leading_zeros(count,x) count = __builtin_clzl (x)
 #define count_trailing_zeros(count,x) count = __builtin_ctzl (x)
 #endif
-#endif
-#endif
+#else /* __FreeBSD Case */
+#define count_leading_zeros(count,x) count = __builtin_clzl (x)
+#define count_trailing_zeros(count,x) count = __builtin_ctzl (x)
+#endif /* __FreeBSD__ */
+
 
 #ifndef count_leading_zeros
 

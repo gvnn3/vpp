@@ -47,6 +47,10 @@
 #include <vppinfra/error.h>
 #include <vppinfra/bitops.h>	/* for count_set_bits */
 
+#ifdef __FreeBSD__
+#include <vppinfra/clib.h>
+#endif /* __FreeBSD__ */
+
 typedef uword clib_bitmap_t;
 
 /** predicate function; is an entire bitmap empty?

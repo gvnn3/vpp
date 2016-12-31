@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # Get Command Line arguements if present
 VPP_DIR=$1
@@ -43,12 +43,12 @@ echo DISTRIB_DESCRIPTION: $DISTRIB_DESCRIPTION
 
 # Install dependencies
 cd $VPP_DIR
-make UNATTENDED=yes install-dep
+#make UNATTENDED=yes install-dep
 
 # Really really clean things up so we can be sure
 # that the build works even when switching distros
-$SUDOCMD make wipe
-(cd build-root/;$SUDOCMD make distclean)
+$SUDOCMD gmake wipe
+(cd build-root/;$SUDOCMD gmake distclean)
 rm -f build-root/.bootstrap.ok
 
 if [ $DISTRIB_ID == "CentOS" ]; then
@@ -64,11 +64,10 @@ if [ $DISTRIB_ID == "CentOS" ]; then
 fi
 
 # Build and install packaging
-$SUDOCMD make bootstrap
+$SUDOCMD gmake bootstrap
 if [ $DISTRIB_ID == "Ubuntu" ]; then
-    $SUDOCMD make pkg-deb
+    $SUDOCMD gmake pkg-deb
 elif [ $DISTRIB_ID == "CentOS" ]; then
     (cd $VPP_DIR/vnet ;$SUDOCMD aclocal;$SUDOCMD automake -a)
-    $SUDOCMD make pkg-rpm
+    $SUDOCMD gmake pkg-rpm
 fi
-

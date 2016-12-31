@@ -28,6 +28,10 @@
 #include <rte_lcore.h>
 #endif
 
+#if defined(__FreeBSD__)
+#define cpu_set_t cpuset_t
+#endif 
+
 static u8 *
 format_sched_policy_and_priority (u8 * s, va_list * args)
 {

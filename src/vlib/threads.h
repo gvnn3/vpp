@@ -16,7 +16,15 @@
 #define included_vlib_threads_h
 
 #include <vlib/main.h>
+
+#if defined(__Linux__)
 #include <linux/sched.h>
+#endif
+
+#if defined(__FreeBSD__)
+#include <sys/cpuset.h>
+#include <pthread_np.h>
+#endif /* __FreeBSD__ */
 
 extern vlib_main_t **vlib_mains;
 
@@ -250,8 +258,6 @@ do {                                                                    \
 
 #define foreach_sched_policy \
   _(SCHED_OTHER, OTHER, "other") \
-  _(SCHED_BATCH, BATCH, "batch") \
-  _(SCHED_IDLE, IDLE, "idle")   \
   _(SCHED_FIFO, FIFO, "fifo")   \
   _(SCHED_RR, RR, "rr")
 

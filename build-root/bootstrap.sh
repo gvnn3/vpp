@@ -47,6 +47,6 @@ cd $build_root
 echo Compile native tools
 for tool in tools
 do
-    make V=0 is_build_tool=yes $tool-install
+    gmake V=0 is_build_tool=yes $tool-install
 done
 

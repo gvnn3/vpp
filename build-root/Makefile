@@ -39,7 +39,7 @@
 ######################################################################
 
 # Scripts require non-POSIX parts of bash
-SHELL := /bin/bash
+SHELL := /usr/local/bin/bash
 
 # Where this makefile lives
 MU_BUILD_ROOT_DIR = $(shell pwd)
@@ -666,7 +666,7 @@ MAKE_PARALLEL_FLAGS = $(if $($(PACKAGE)_make_parallel_fails),,$(MAKE_PARALLEL_JO
 
 # Make command shorthand for packages & tools.
 PACKAGE_MAKE =					\
-  $(MAKE)					\
+  gmake					\
     -C $(PACKAGE_BUILD_DIR)			\
     $($(PACKAGE)_make_args)			\
     $(MAKE_PARALLEL_FLAGS)

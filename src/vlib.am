@@ -36,8 +36,6 @@ libvlib_la_SOURCES =				\
   vlib/node.c					\
   vlib/node_cli.c				\
   vlib/node_format.c				\
-  vlib/pci/pci.c				\
-  vlib/pci/linux_pci.c				\
   vlib/threads.c				\
   vlib/threads_cli.c				\
   vlib/trace.c
@@ -62,8 +60,6 @@ nobase_include_HEADERS +=			\
   vlib/node_funcs.h				\
   vlib/node.h					\
   vlib/physmem.h				\
-  vlib/pci/pci.h				\
-  vlib/pci/pci_config.h				\
   vlib/threads.h				\
   vlib/trace_funcs.h				\
   vlib/trace.h					\
@@ -97,7 +93,7 @@ vlib_unix_SOURCES =				\
   examples/vlib/mc_test.c
 
 vlib_unix_LDADD = libvlib_unix.la libvlib.la \
-	          libvppinfra.la -lpthread -lm -ldl -lrt
+	          libvppinfra.la -lpthread -lm -lrt
 endif
 
 # vi:syntax=automake

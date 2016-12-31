@@ -46,6 +46,10 @@
 #include <vppinfra/error.h>
 #include <vppinfra/format.h>
 
+#if defined(__FreeBSD__)
+#define IPPORT_USERRESERVED 50000
+#endif /* __FreeBSD__ */
+
 typedef struct _socket_t
 {
   /* File descriptor. */

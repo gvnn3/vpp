@@ -121,8 +121,13 @@ htlb_init (vlib_main_t * vm)
   u64 cur, physaddr, ptbits;
   int fd, i;
 
+#ifndef __FreeBSD__
   pm->shmid = shmget (11 /* key, my amp goes to 11 */ , pm->mem_size,
 		      IPC_CREAT | SHM_HUGETLB | SHM_R | SHM_W);
+#else
+  pm->shmid = shmget (11 /* key, my amp goes to 11 */ , pm->mem_size,
+		      IPC_CREAT | SHM_R | SHM_W);
+#endif /* __FreeBSD__ */
   if (pm->shmid < 0)
     {
       clib_unix_warning ("shmget");
@@ -290,6 +295,8 @@ VLIB_CLI_COMMAND (show_physmem_command, static) = {
 };
 /* *INDENT-ON* */
 
+#ifndef __FreeBSD__
+
 static clib_error_t *
 show_affinity (vlib_main_t * vm,
 	       unformat_input_t * input, vlib_cli_command_t * cmd)
@@ -436,6 +443,8 @@ VLIB_CLI_COMMAND (set_affinity_command, static) = {
   .function = set_affinity,
 };
 /* *INDENT-ON* */
+
+#endif /* __FreeBSD__ */
 
 static clib_error_t *
 vlib_physmem_configure (vlib_main_t * vm, unformat_input_t * input)

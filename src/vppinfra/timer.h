@@ -26,6 +26,10 @@
 
 #include <signal.h>
 
+#if defined(__FreeBSD__)
+#define HZ 1000
+#endif /* __FreeBSD__ */
+
 typedef void (timer_func_t) (any arg, f64 delay);
 
 /* Arrange for function to be called after time interval (in seconds) has elapsed. */

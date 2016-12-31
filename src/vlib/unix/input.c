@@ -42,6 +42,7 @@
 #include <signal.h>
 
 /* FIXME autoconf */
+#ifndef __FreeBSD__
 #define HAVE_LINUX_EPOLL
 
 #ifdef HAVE_LINUX_EPOLL
@@ -247,11 +248,20 @@ linux_epoll_input_init (vlib_main_t * vm)
 VLIB_INIT_FUNCTION (linux_epoll_input_init);
 
 #endif /* HAVE_LINUX_EPOLL */
+#endif /* __FreeBSD__ */
+
+clib_error_t *
+bsd_input_init (vlib_main_t * vm)
+{
+  return NULL;
+}
+
+VLIB_INIT_FUNCTION (bsd_input_init);
 
 static clib_error_t *
 unix_input_init (vlib_main_t * vm)
 {
-  return vlib_call_init_function (vm, linux_epoll_input_init);
+  return vlib_call_init_function (vm, bsd_input_init);
 }
 
 VLIB_INIT_FUNCTION (unix_input_init);

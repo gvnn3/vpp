@@ -25,7 +25,10 @@ GDB_ARGS= -ex "handle SIGUSR1 noprint nostop"
 # OS Detection
 #
 # We allow Darwin (MacOS) for docs generation; VPP build will still fail.
-ifneq ($(shell uname),Darwin)
+ifeq ($(shell uname),FreeBSD)
+OS_ID        = $(shell uname)
+OS_VERSION_ID= $(shell uname -r | awk -F- '{ print $1 }')
+else ifneq ($(shell uname),Darwin)
 OS_ID        = $(shell grep '^ID=' /etc/os-release | cut -f2- -d= | sed -e 's/\"//g')
 OS_VERSION_ID= $(shell grep '^VERSION_ID=' /etc/os-release | cut -f2- -d= | sed -e 's/\"//g')
 endif
@@ -122,13 +125,13 @@ help:
 
 $(BR)/.bootstrap.ok:
 ifeq ($(findstring y,$(UNATTENDED)),y)
-	make install-dep
+	gmake install-dep
 endif
 ifeq ($(OS_ID),ubuntu)
 	@MISSING=$$(apt-get install -y -qq -s $(DEB_DEPENDS) | grep "^Inst ") ; \
 	if [ -n "$$MISSING" ] ; then \
 	  echo "\nPlease install missing packages: \n$$MISSING\n" ; \
-	  echo "by executing \"make install-dep\"\n" ; \
+	  echo "by executing \"gmake install-dep\"\n" ; \
 	  exit 1 ; \
 	fi ; \
 	exit 0
@@ -170,7 +173,7 @@ else
 endif
 
 define make
-	@make -C $(BR) PLATFORM=$(PLATFORM) TAG=$(1) $(2)
+	@gmake -C $(BR) PLATFORM=$(PLATFORM) TAG=$(1) $(2)
 endef
 
 $(BR)/scripts/.version:
@@ -188,7 +191,7 @@ distversion:	$(BR)/scripts/.version
 	mv $(verstring).tar.gz $(BR)/rpm
 
 build: $(BR)/.bootstrap.ok
-	$(call make,$(PLATFORM)_debug,vpp-install)
+	$(call gmake,$(PLATFORM)_debug,vpp-install)
 
 wipedist:
 	$(RM) $(BR)/scripts/.version $(BR)/rpm/*.tar.gz

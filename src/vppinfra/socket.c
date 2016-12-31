@@ -52,6 +52,7 @@
 #include <vppinfra/format.h>
 #include <vppinfra/error.h>
 
+
 void
 clib_socket_tx_add_formatted (clib_socket_t * s, char *fmt, ...)
 {

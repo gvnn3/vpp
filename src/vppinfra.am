@@ -264,7 +264,7 @@ libvppinfra_la_SOURCES =			\
   vppinfra/elf_clib.c				\
   vppinfra/socket.c				\
   vppinfra/timer.c				\
-  vppinfra/unix-formats.c			\
+  vppinfra/bsd-formats.c			\
   vppinfra/unix-misc.c
 
 bin_PROGRAMS = elftool

@@ -441,7 +441,7 @@ test_map_CPPFLAGS = $(AM_CPPFLAGS) -DCLIB_DEBUG
 
 test_map_LDADD = libvnet.la libvppinfra.la libvlib.la	\
   -lpthread -lvlibmemory -lvlibapi -lvlib_unix	\
-  -ldl -lsvm -lrt
+  -lsvm -lrt
 
 test_map_LDFLAGS = -static
 endif
@@ -571,7 +571,7 @@ LDS = \
   libsvmdb.la \
   libvlibapi.la \
   libvlibmemory.la \
-  -lpthread -ldl -lrt -lm -lcrypto
+  -lpthread -lrt -lm -lcrypto
 
 TESTS += test_cp_serdes test_lisp_types
 
@@ -759,12 +759,12 @@ libvnet_la_SOURCES +=				\
 
 nobase_include_HEADERS +=			\
   vnet/devices/dpdk/dpdk.h
-else
-libvnet_la_SOURCES +=				\
-  vnet/devices/nic/ixge.c                       \
-  vnet/devices/nic/ixge.h                       \
-  vnet/devices/nic/sfp.c                        \
-  vnet/devices/nic/sfp.h
+#else
+#libvnet_la_SOURCES +=				\
+#  vnet/devices/nic/ixge.c                       \
+#  vnet/devices/nic/ixge.h                       \
+#  vnet/devices/nic/sfp.c                        \
+#  vnet/devices/nic/sfp.h
 endif
 
 ########################################
@@ -795,18 +795,18 @@ nobase_include_HEADERS +=			\
 # Linux packet interface
 ########################################
 
-libvnet_la_SOURCES +=				\
-  vnet/devices/af_packet/af_packet.c		\
-  vnet/devices/af_packet/device.c		\
-  vnet/devices/af_packet/node.c			\
-  vnet/devices/af_packet/cli.c			\
-  vnet/devices/af_packet/af_packet_api.c
+# libvnet_la_SOURCES +=				\
+#   vnet/devices/af_packet/af_packet.c		\
+#   vnet/devices/af_packet/device.c		\
+#   vnet/devices/af_packet/node.c			\
+#   vnet/devices/af_packet/cli.c			\
+#   vnet/devices/af_packet/af_packet_api.c
 
-nobase_include_HEADERS +=			\
-  vnet/devices/af_packet/af_packet.h	\
-  vnet/devices/af_packet/af_packet.api.h
+# nobase_include_HEADERS +=			\
+#   vnet/devices/af_packet/af_packet.h	\
+#   vnet/devices/af_packet/af_packet.api.h
 
-API_FILES += vnet/devices/af_packet/af_packet.api
+# API_FILES += vnet/devices/af_packet/af_packet.api
 
 ########################################
 # NETMAP interface
@@ -843,19 +843,19 @@ nobase_include_HEADERS +=			\
 # FIXME: vnet/unix/hgshm.c
 
 libvnet_la_SOURCES +=				\
-  vnet/unix/gdb_funcs.c				\
-  vnet/unix/pcap.c				\
-  vnet/unix/tap_api.c				\
-  vnet/unix/tapcli.c				\
-  vnet/unix/tuntap.c
+   vnet/unix/pcap.c
+#   vnet/unix/gdb_funcs.c				\
+#   vnet/unix/tap_api.c				\
+#   vnet/unix/tapcli.c				\
+#   vnet/unix/tuntap.c
 
 nobase_include_HEADERS +=			\
-  vnet/unix/pcap.h				\
-  vnet/unix/tuntap.h				\
-  vnet/unix/tap.api.h				\
-  vnet/unix/tapcli.h
+   vnet/unix/pcap.h				
+#   vnet/unix/tuntap.h				\
+#   vnet/unix/tap.api.h				\
+#   vnet/unix/tapcli.h
 
-API_FILES += vnet/unix/tap.api
+#API_FILES += vnet/unix/tap.api
 
 ########################################
 # FIB
@@ -965,7 +965,7 @@ pcap2pg_SOURCES = 				\
   vnet/unix/pcap.h
 
 pcap2pg_LDFLAGS = -static
-pcap2pg_LDADD = libvnet.la libvppinfra.la -lpthread libvlibmemory.la -lm -ldl
+pcap2pg_LDADD = libvnet.la libvppinfra.la -lpthread libvlibmemory.la -lm
 
 noinst_PROGRAMS += pcap2pg
 

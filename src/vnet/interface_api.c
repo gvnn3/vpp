@@ -218,7 +218,9 @@ vl_api_sw_interface_dump_t_handler (vl_api_sw_interface_dump_t * mp)
   vnet_interface_main_t *im = &am->vnet_main->interface_main;
   u8 *filter_string = 0, *name_string = 0;
   unix_shared_memory_queue_t *q;
+#if !defined(__FreeBSD__)
   char *strcasestr (char *, char *);	/* lnx hdr file botch */
+#endif /* __FreeBSD__ */
 
   q = vl_api_client_index_to_input_queue (mp->client_index);
 

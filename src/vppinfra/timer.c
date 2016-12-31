@@ -93,6 +93,10 @@ sort_timers (timer_callback_t * timers)
  */
 static f64 time_resolution;
 
+#ifdef __FreeBSD__
+#define HZ 1000
+#endif /* XXX GNN Fix with sysctl below __FreeBSD__ */
+
 /* Interrupt handler.  Call functions for all expired timers.
    Set time for next timer interrupt. */
 static void
