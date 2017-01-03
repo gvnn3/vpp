@@ -478,8 +478,18 @@ svm_map_region (svm_map_region_args_t * a)
 
       vec_free (shm_name);
 
+#if defined(__FreeBSD__)
+      if (ftruncate(svm_fd, a->size) < 0)
+	{
+	  perror(NULL);
+	  clib_warning ("ftruncate region size");
+	  close (svm_fd);
+	  return (0);
+	}
+#else
       if (lseek (svm_fd, a->size, SEEK_SET) == (off_t) - 1)
 	{
+	  perror(NULL);
 	  clib_warning ("seek region size");
 	  close (svm_fd);
 	  return (0);
@@ -490,7 +500,7 @@ svm_map_region (svm_map_region_args_t * a)
 	  close (svm_fd);
 	  return (0);
 	}
-
+#endif /* __FreeBSD__ */
       rp = mmap ((void *) a->baseva, a->size,
 		 PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED, svm_fd, 0);
 

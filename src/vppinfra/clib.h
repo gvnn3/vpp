@@ -48,7 +48,7 @@
 /* Global DEBUG flag.  Setting this to 1 or 0 turns off
    ASSERT (see vppinfra/error.h) & other debugging code. */
 #ifndef CLIB_DEBUG
-#define CLIB_DEBUG 0
+#define CLIB_DEBUG 32
 #endif
 
 #ifndef NULL

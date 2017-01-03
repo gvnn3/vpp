@@ -156,15 +156,22 @@ vlib_thread_init (vlib_main_t * vm)
   u32 first_index = 1;
   u32 i;
   uword *avail_cpu;
+  u32 cores;
 
   /* get bitmaps of active cpu cores and sockets */
+#if defined(__FreeBSD__)
+  tm->cpu_core_bitmap = malloc(sizeof(uword));
+  *tm->cpu_core_bitmap = 0;
+  cores = sysconf(_SC_NPROCESSORS_ONLN);
+  for (int i = 0; i < cores; i++)
+    *tm->cpu_core_bitmap |= 1 << i;
+#else
   tm->cpu_core_bitmap =
     vlib_sysfs_list_to_bitmap ("/sys/devices/system/cpu/online");
   tm->cpu_socket_bitmap =
     vlib_sysfs_list_to_bitmap ("/sys/devices/system/node/online");
-
+#endif /* __FreeBSD__ */
   avail_cpu = clib_bitmap_dup (tm->cpu_core_bitmap);
-
   /* skip cores */
   for (i = 0; i < tm->skip_cores; i++)
     {
@@ -178,7 +185,11 @@ vlib_thread_init (vlib_main_t * vm)
   /* grab cpu for main thread */
   if (!tm->main_lcore)
     {
+#if defined(__FreeBSD__)
+      tm->main_lcore = 1;
+#else
       tm->main_lcore = clib_bitmap_first_set (avail_cpu);
+#endif /* __FreeBSD__ */
       if (tm->main_lcore == (u8) ~ 0)
 	return clib_error_return (0, "no available cpus to be used for the"
 				  " main thread");

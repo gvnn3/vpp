@@ -90,7 +90,7 @@ typedef struct svm_map_region_args_
  */
 #define SVM_GLOBAL_REGION_BASEVA  0x30000000
 #define SVM_GLOBAL_REGION_SIZE    (64<<20)
-#define SVM_GLOBAL_REGION_NAME "/global_vm"
+#define SVM_GLOBAL_REGION_NAME "/tmp/global_vm"
 
 /*
  * Memory shared across individual router instances.
@@ -98,7 +98,7 @@ typedef struct svm_map_region_args_
 #define SVM_OVERLAY_REGION_BASEVA \
                (SVM_GLOBAL_REGION_BASEVA + SVM_GLOBAL_REGION_SIZE)
 #define SVM_OVERLAY_REGION_SIZE   (1<<20)
-#define SVM_OVERLAY_REGION_BASENAME "/overlay_vm"
+#define SVM_OVERLAY_REGION_BASENAME "/tmp/overlay_vm"
 
 typedef struct
 {

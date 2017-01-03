@@ -37,10 +37,12 @@ ip_adjacency_t *adj_pool;
 always_inline void
 adj_poison (ip_adjacency_t * adj)
 {
+#if 0
     if (CLIB_DEBUG > 0)
     {
 	memset (adj, 0xfe, sizeof (adj[0]));
     }
+#endif /* XXX */
 }
 
 ip_adjacency_t *
